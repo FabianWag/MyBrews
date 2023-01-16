@@ -1,0 +1,13 @@
+Package: MyBrews
+Title: mybrews_dashboard
+Version: 0.0.0.9000
+Authors@R: person('Fabian', 'Wagner', email = 'fabianwagner.ds@gmail.com', role = c('cre', 'aut'))
+Description: A dashboard showing visualisations and statistics for my homebrews. Data is gathered from Brewfather.
+License: MIT + file LICENSE
+Imports: 
+    config (>= 0.3.1),
+    golem (>= 0.3.5),
+    shiny (>= 1.7.4)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
