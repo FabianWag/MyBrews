@@ -10,7 +10,8 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # Your application UI logic
     fluidPage(
-      h1("MyBrews")
+      h1("MyBrews"),
+      mod_brew_ui("brew_1")
     )
   )
 }
