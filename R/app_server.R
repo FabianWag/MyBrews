@@ -6,5 +6,5 @@
 #' @noRd
 app_server <- function(input, output, session) {
   # Your application server logic
-  mod_brew_ui("brew_1")
+  mod_brew_server("brew_1")
 }

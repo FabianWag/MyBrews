@@ -3,6 +3,9 @@
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
 #' @import shiny
+#' @import ggplot2
+#' @import dplyr
+#' @import forcats
 #' @noRd
 app_ui <- function(request) {
   tagList(
