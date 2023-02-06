@@ -3,6 +3,7 @@
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
 #' @import shiny
+#' @import shinydashboard
 #' @import ggplot2
 #' @import dplyr
 #' @import forcats
@@ -12,9 +13,24 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    fluidPage(
-      h1("MyBrews"),
-      mod_brew_ui("brew_1")
+    dashboardPage(
+      dashboardHeader(title = "MyBrews"),
+      dashboardSidebar(
+        menuItem("Overview", tabName = "overview", icon = icon("dashboard")),
+        menuItem("Efficiency", tabName = "breweff", icon = icon("th")),
+        menuItem("Brews", tabName = "indbrew", icon = icon("th"))
+      ),
+      dashboardBody(
+        tabItems(
+          #First tab content
+          tabItem(tabName = "overview",
+                    mod_brew_ui("brew_1")),
+
+          tabItem(tabName = "breweff"),
+
+          tabItem(tabName = "indbrew")
+        )
+      )
     )
   )
 }

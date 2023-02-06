@@ -18,7 +18,9 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of MyBrews is to ...
+The goal of MyBrews is to provide an overview over the authors homebrews (literally beer, not software). It is planned as a dashboard containing the brews done and some statistics and visualisations about the brews. The data comes from the authors brewfather database.
+
+The following text is an automatically created filler text and will be updated when the basic functionality is created.
 
 ## Installation
 

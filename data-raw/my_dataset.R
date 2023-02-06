@@ -44,7 +44,8 @@ data_size <- length(completed)
 completed_batches <- data.frame(style = character(data_size),
                                 equipment = character(data_size),
                                 brewhouse_efficiency = numeric(data_size),
-                                abv = numeric(data_size))
+                                abv = numeric(data_size),
+                                batch_start = TRUE)
 
 for(i in 1:data_size){
   list <- completed[[i]]
@@ -63,10 +64,13 @@ for(i in 1:data_size){
 
   completed_batches$brewhouse_efficiency[i] <- list$measuredEfficiency
   completed_batches$abv[i] <- list$measuredAbv
+
+  completed_batches$batch_start[i] <- list$brewDate/1000
 }
 
 rm(completed, list, data_size, i)
 
+completed_batches$batch_start <- lubridate::as_datetime(completed_batches$batch_start)
 
 my_dataset <- completed_batches
 rm(completed_batches)

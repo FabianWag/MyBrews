@@ -10,12 +10,10 @@
 mod_brew_ui <- function(id){
   ns <- NS(id)
   tagList(
-    fluidPage(
       dataTableOutput(ns("table")),
       plotOutput(ns("equipment")),
       plotOutput(ns("styles")),
       plotOutput(ns("efficiency"))
-    )
   )
 }
 

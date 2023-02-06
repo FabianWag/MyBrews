@@ -1,0 +1,43 @@
+```{r, message = F}
+library(tidyverse)
+
+load("data/my_dataset.rda")
+
+my_dataset <- my_dataset %>%
+  group_by(equipment) %>%
+  arrange(batch_start) %>%
+  mutate(index = TRUE,
+         index = cumsum(index))
+  
+```
+
+```{r}
+my_dataset %>%
+  group_by(equipment) %>%
+  mutate(index = TRUE,
+         index = cumsum(index))
+
+my_dataset %>%
+  filter(equipment == "Default")
+```
+
+```{r}
+my_dataset %>%
+  ggplot(aes(x = equipment, y = brewhouse_efficiency)) +
+  geom_boxplot() +
+  labs(x = NULL,
+       y = "Brewhouse Efficiency (%)") +
+  theme_classic()
+```
+```{r}
+my_dataset %>%
+  ggplot(aes(x = index, y = brewhouse_efficiency, colour = equipment)) +
+  geom_line() +
+  labs(x = bquote(n^th~" Brew"),
+       y = "Brewhouse Efficiency (%)",
+       colour = "Equipment") +
+  theme_classic() +
+  scale_colour_viridis_d() +
+  ylim(c(0,100))
+```
+
