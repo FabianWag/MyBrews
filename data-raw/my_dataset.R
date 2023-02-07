@@ -2,6 +2,7 @@
 library(httr)
 library(jsonlite)
 library(purrr)
+library(dplyr)
 
 
 
@@ -38,7 +39,7 @@ rm(getcompleted,
 
 
 
-### create file for completed brews. compare elements and update file if more brews have been complete
+### create file for completed brews. compare elements and update file if more brews have been complete ------------
 
 call_id <- function(x, list){
   id <- list %>%
@@ -92,9 +93,89 @@ if(!all.equal(check[[1]], check[[2]])){
 
 
 
+#### BrewHistory -------------
+
+### i need to create multiple data.frames
+### one for rough brew description
+### one for hops and one for malts
+
+get_basics <- function(x){
+  basics <- list(name = completed %>%
+                   pluck(x, "name"),
+
+                 style_type = completed %>%
+                   pluck(x, "recipe", "style", "type"),
+
+                 style_name = completed %>%
+                   pluck(x, "recipe", "style", "name"),
+
+                 brewdate = completed %>%
+                   pluck(x, "brewDate"),
+
+                 bottlingdate = completed %>%
+                   pluck(x, "bottlingDate"),
+
+                 batchno = completed %>%
+                   pluck(x, "batchNo"),
+
+                 estOG = completed %>%
+                   pluck(x, "estimatedOg"),
+
+                 measuredOG = completed %>%
+                   pluck(x, "measuredOg"),
+
+                 estFG = completed %>%
+                   pluck(x, "estimatedFg"),
+
+                 measuredFG = completed %>%
+                   pluck(x, "measuredFg"),
+
+                 estABV_fromrecipe = completed %>%
+                   pluck(x, "recipe", "abv"),
+
+                 measuredABV = completed %>%
+                   pluck(x, "measuredAbv"),
+
+                 estimatedIBU = completed %>%
+                   pluck(x, "estimatedIbu"),
+
+                 fermentables_kg_fromrecipe = completed %>%
+                   pluck(x, "recipe", "fermentablesTotalAmount"),
+
+                 yeast = completed %>%
+                   pluck(x, "batchYeasts", "name"),
+
+                 batchsize_liter = completed %>%
+                   pluck(x, "recipe", "batchSize"))
+}
+
+basics_data <- map_dfr(1:length(completed), get_basics) %>%
+  mutate(brewdate = lubridate::as_datetime(brewdate/1000),
+         bottlingdate = lubridate::as_datetime(bottlingdate/1000),
+         estOGplato = (-1 * 616.868) + (1111.14 * estOG) - (630.272 * estOG^2) + (135.997 * estOG^3))
+
+get_hops <- function(x){
+  completed %>%
+    pluck(x, "batchHops")
+}
+
+get_hops(1)
+map_dfr(1, get_hops)
+
+get_malts <- function(x){
+  completed %>%
+    pluck(x, "batchFermentables")
+}
+
+map_dfr(1, get_malts)
 
 
-#### BrewHistory
+get_steps <- function(x){
+  completed %>%
+    pluck(x, "batchFermentables")
+}
+
+## old code
 
 data_size <- length(completed)
 
@@ -104,6 +185,8 @@ completed_batches <- data.frame(style = character(data_size),
                                 brewhouse_efficiency = numeric(data_size),
                                 abv = numeric(data_size),
                                 batch_start = TRUE)
+
+
 
 for(i in 1:data_size){
   list <- completed[[i]]
